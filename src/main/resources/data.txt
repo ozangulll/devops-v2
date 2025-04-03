@@ -1,0 +1,19 @@
+-- Insert data into employees table
+INSERT INTO employees (name, department) VALUES
+('Ali Yılmaz', 'Software Development'),
+('Ayşe Demir', 'Marketing'),
+('Mehmet Kara', 'Software Development');
+
+-- Insert data into tasks table
+INSERT INTO tasks (name, description) VALUES
+('Software Development', 'Writing code for new features'),
+('Test Writing', 'Writing tests for the software'),
+('Documentation', 'Preparing documentation for the project');
+
+-- Insert data into taskers table to link employees and tasks
+INSERT INTO taskers (employee_id, task_id) VALUES
+(1, 1),  -- Ali Yılmaz -> Software Development
+(1, 2),  -- Ali Yılmaz -> Test Writing
+(2, 3),  -- Ayşe Demir -> Documentation
+(3, 1),  -- Mehmet Kara -> Software Development
+(3, 2);  -- Mehmet Kara -> Test Writing
