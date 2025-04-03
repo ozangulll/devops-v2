@@ -1,10 +1,12 @@
 package org.sau.devopsv2.dto;
 
+import java.util.Set;
+
 public class TaskDTO {
     private Long id;
     private String name;
     private String description;
-
+    private Set<Long> employeeIds;
     // Getter ve Setter metotları
     public Long getId() {
         return id;
@@ -28,5 +30,12 @@ public class TaskDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setEmployeeIds(Set<Long> employeeIds) {
+        this.employeeIds = employeeIds;
+    }
+    public Set<Long> getEmployeeIds() {
+        return employeeIds;
     }
 }
