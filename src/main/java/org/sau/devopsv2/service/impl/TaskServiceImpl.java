@@ -1,5 +1,7 @@
 package org.sau.devopsv2.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.sau.devopsv2.entity.Task;
 import org.sau.devopsv2.repository.TaskRepository;
 import org.sau.devopsv2.service.TaskService;
@@ -15,6 +17,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public List<Task> getAllTasks() {
@@ -42,10 +46,7 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
-    @Override
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
-    }
+
 
     @Override
     public List<Task> getTasksByName(String name) {
@@ -55,5 +56,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Set<Task> getTasksByIds(Set<Long> taskIds) {
         return new HashSet<>(taskRepository.findAllById(taskIds));
+    }
+    @Transactional
+    public void deleteTask(Long taskId) {
+        entityManager.createNativeQuery("DELETE FROM taskers WHERE task_id = :taskId")
+                .setParameter("taskId", taskId)
+                .executeUpdate();
+
+        entityManager.createNativeQuery("DELETE FROM tasks WHERE id = :taskId")
+                .setParameter("taskId", taskId)
+                .executeUpdate();
     }
 }
