@@ -48,7 +48,7 @@ public class TaskController {
         return mapper.convertToTaskDTO(taskService.updateTask(id, task));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
