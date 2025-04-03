@@ -6,7 +6,9 @@ import org.sau.devopsv2.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -48,5 +50,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getTasksByName(String name) {
         return taskRepository.findByNameContaining(name);
+    }
+
+    @Override
+    public Set<Task> getTasksByIds(Set<Long> taskIds) {
+        return new HashSet<>(taskRepository.findAllById(taskIds));
     }
 }

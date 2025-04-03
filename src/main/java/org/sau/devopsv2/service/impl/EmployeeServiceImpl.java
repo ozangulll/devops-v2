@@ -6,7 +6,9 @@ import org.sau.devopsv2.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -35,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (existingEmployee != null) {
             existingEmployee.setName(employee.getName());
             existingEmployee.setDepartment(employee.getDepartment());
+            existingEmployee.setTasks(employee.getTasks())  ;
             return employeeRepository.save(existingEmployee);
         }
         return null;
@@ -48,5 +51,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployeesByDepartment(String department) {
         return employeeRepository.findByDepartment(department);
+    }
+    @Override
+    public Set<Employee> getEmployeesByIds(Set<Long> employeeIds) {
+        return new HashSet<>(employeeRepository.findAllById(employeeIds));
     }
 }
