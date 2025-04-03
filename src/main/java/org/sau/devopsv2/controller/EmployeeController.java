@@ -2,12 +2,15 @@ package org.sau.devopsv2.controller;
 
 import org.sau.devopsv2.dto.EmployeeDTO;
 import org.sau.devopsv2.entity.Employee;
+import org.sau.devopsv2.entity.Task;
 import org.sau.devopsv2.mapper.EntityMapper;
 import org.sau.devopsv2.service.EmployeeService;
+import org.sau.devopsv2.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -15,6 +18,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private EntityMapper mapper;
@@ -32,13 +37,16 @@ public class EmployeeController {
     @PostMapping("/create")
     public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeDTO.setId(null);
-        Employee employee = mapper.convertToEmployeeEntity(employeeDTO);
+        Set<Task> tasks = taskService.getTasksByIds(employeeDTO.getTaskIds());
+        Employee employee = mapper.convertToEmployeeEntity(employeeDTO, tasks);
         return mapper.convertToEmployeeDTO(employeeService.createEmployee(employee));
     }
 
+
     @PutMapping("/update/{id}")
     public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = mapper.convertToEmployeeEntity(employeeDTO);
+        Set<Task> tasks = taskService.getTasksByIds(employeeDTO.getTaskIds());
+        Employee employee = mapper.convertToEmployeeEntity(employeeDTO, tasks);
         return mapper.convertToEmployeeDTO(employeeService.updateEmployee(id, employee));
     }
 
