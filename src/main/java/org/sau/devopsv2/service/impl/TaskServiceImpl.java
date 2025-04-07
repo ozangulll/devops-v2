@@ -17,8 +17,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+    /*
     @Autowired
     private EntityManager entityManager;
+
+     */
 
     @Override
     public List<Task> getAllTasks() {
@@ -46,6 +49,10 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+    @Override
+    public void deleteTask(Long id) {
+     taskRepository.deleteById(id);
+    }
 
 
     @Override
@@ -57,6 +64,7 @@ public class TaskServiceImpl implements TaskService {
     public Set<Task> getTasksByIds(Set<Long> taskIds) {
         return new HashSet<>(taskRepository.findAllById(taskIds));
     }
+    /*
     @Transactional
     public void deleteTask(Long taskId) {
         entityManager.createNativeQuery("DELETE FROM taskers WHERE task_id = :taskId")
@@ -67,4 +75,6 @@ public class TaskServiceImpl implements TaskService {
                 .setParameter("taskId", taskId)
                 .executeUpdate();
     }
+
+     */
 }
