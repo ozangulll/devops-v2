@@ -1,7 +1,9 @@
 package org.sau.devopsv2.entity;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+import java.util.Set;
+
 import lombok.Data;
 
 import java.util.Set;
@@ -15,8 +17,8 @@ public class Task {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "tasks")
-    private Set<Employee> employees;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Tasker> taskers;
 
     public Long getId() {
         return id;
@@ -36,11 +38,12 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Set<Employee> getEmployees() {
-        return employees;
+
+    public Set<Tasker> getTaskers() {
+        return taskers;
     }
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
+    public void setTaskers(Set<Tasker> taskers) {
+        this.taskers = taskers;
     }
 }
 
