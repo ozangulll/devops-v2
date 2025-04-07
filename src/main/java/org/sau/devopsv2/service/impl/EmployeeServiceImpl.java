@@ -1,6 +1,7 @@
 package org.sau.devopsv2.service.impl;
 
 import org.sau.devopsv2.entity.Employee;
+import org.sau.devopsv2.entity.Tasker;
 import org.sau.devopsv2.repository.EmployeeRepository;
 import org.sau.devopsv2.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
         Employee existingEmployee = getEmployeeById(id);
+
         if (existingEmployee != null) {
+            // Mevcut taskers ile yeni taskers'ı güncelle
+            Set<Tasker> updatedTaskers = employee.getTaskers();
+            existingEmployee.setTaskers(updatedTaskers);
             existingEmployee.setName(employee.getName());
             existingEmployee.setDepartment(employee.getDepartment());
-            existingEmployee.setTasks(employee.getTasks())  ;
             return employeeRepository.save(existingEmployee);
         }
         return null;
     }
+
 
     @Override
     public void deleteEmployee(Long id) {

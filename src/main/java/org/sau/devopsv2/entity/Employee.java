@@ -1,8 +1,11 @@
 package org.sau.devopsv2.entity;
 
-import jakarta.persistence.*;
+
 import lombok.Data;
 
+
+
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -15,13 +18,8 @@ public class Employee {
     private String name;
     private String department;
 
-    @ManyToMany
-    @JoinTable(
-            name = "taskers",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
-    )
-    private Set<Task> tasks;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Tasker> taskers;
 
     public Long getId() {
         return id;
@@ -42,11 +40,12 @@ public class Employee {
         this.department = department;
     }
 
-    public Set<Task> getTasks() {
-        return tasks;
+    public Set<Tasker> getTaskers() {
+        return taskers;
     }
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
+
+    public void setTaskers(Set<Tasker> taskers) {
+        this.taskers = taskers;
     }
 }
 
