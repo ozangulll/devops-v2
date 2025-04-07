@@ -55,4 +55,22 @@ public class TaskerServiceImpl implements TaskerService {
     public void deleteAssignment(Long id) {
         taskerRepository.deleteById(id);
     }
+    @Override
+    public TaskerDTO updateAssignment(Long id, TaskerDTO dto) {
+        Optional<Tasker> taskerOpt = taskerRepository.findById(id);
+        Optional<Employee> employeeOpt = employeeRepository.findById(dto.getEmployeeId());
+        Optional<Task> taskOpt = taskRepository.findById(dto.getTaskId());
+
+        if (taskerOpt.isPresent() && employeeOpt.isPresent() && taskOpt.isPresent()) {
+            Tasker tasker = taskerOpt.get();
+            tasker.setEmployee(employeeOpt.get());
+            tasker.setTask(taskOpt.get());
+
+            Tasker updated = taskerRepository.save(tasker);
+            dto.setId(updated.getId());
+            return dto;
+        }
+        throw new RuntimeException("Assignment, Employee, or Task not found");
+    }
+
 }

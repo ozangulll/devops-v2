@@ -44,6 +44,7 @@ public class TaskServiceImpl implements TaskService {
         if (existingTask != null) {
             existingTask.setName(task.getName());
             existingTask.setDescription(task.getDescription());
+            existingTask.setTaskers(task.getTaskers());
             return taskRepository.save(existingTask);
         }
         return null;

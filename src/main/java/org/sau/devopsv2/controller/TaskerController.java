@@ -14,23 +14,29 @@ public class TaskerController {
     @Autowired
     private TaskerService taskerService;
 
-    // Görev atama
+
     @PostMapping("/assign")
     public ResponseEntity<TaskerDTO> assignTask(@RequestBody TaskerDTO dto) {
         TaskerDTO assigned = taskerService.assignTask(dto);
         return ResponseEntity.ok(assigned);
     }
 
-    // Tüm atamaları listele
+
     @GetMapping
     public ResponseEntity<List<TaskerDTO>> getAllAssignments() {
         return ResponseEntity.ok(taskerService.getAllAssignments());
     }
 
-    // Belirli bir atamayı sil
-    @DeleteMapping("/{id}")
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAssignment(@PathVariable Long id) {
         taskerService.deleteAssignment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<TaskerDTO> updateAssignment(@PathVariable Long id, @RequestBody TaskerDTO dto) {
+        TaskerDTO updated = taskerService.updateAssignment(id, dto);
+        return ResponseEntity.ok(updated);
     }
 }

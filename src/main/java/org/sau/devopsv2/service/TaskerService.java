@@ -8,4 +8,6 @@ public interface TaskerService {
     TaskerDTO assignTask(TaskerDTO dto);
     List<TaskerDTO> getAllAssignments();
     void deleteAssignment(Long id);
+
+    TaskerDTO updateAssignment(Long id, TaskerDTO dto);
 }
