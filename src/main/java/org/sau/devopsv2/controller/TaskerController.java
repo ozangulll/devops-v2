@@ -13,7 +13,9 @@ public class TaskerController {
 
     @Autowired
     private TaskerService taskerService;
-
+    TaskerController(TaskerService taskerService) {
+        this.taskerService = taskerService;
+    }
 
     @PostMapping("/assign")
     public ResponseEntity<TaskerDTO> assignTask(@RequestBody TaskerDTO dto) {
