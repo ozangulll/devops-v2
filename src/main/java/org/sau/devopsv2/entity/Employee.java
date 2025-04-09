@@ -1,11 +1,12 @@
 package org.sau.devopsv2.entity;
 
 
+
 import lombok.Data;
 
 
-
-import javax.persistence.*;
+import jakarta.persistence.*;
+//import javax.persistence.*;
 import java.util.Set;
 
 @Entity

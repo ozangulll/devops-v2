@@ -77,45 +77,47 @@ public class EmployeeController {
 
     // working
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
-        return ResponseEntity.noContent().build();
+        ApiResponse response = new ApiResponse("Employee deleted successfully with id: " + id, HttpStatus.OK.value());
+        return ResponseEntity.ok(response);
     }
     //working
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO) {
-        Optional<Employee> employeeOpt = Optional.ofNullable(employeeService.getEmployeeById(id));
+        Employee employee = employeeService.getEmployeeById(id);
 
-        if (employeeOpt.isEmpty()) {
+        if (employee == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse("Employee not found with id: " + id, HttpStatus.NOT_FOUND.value()));
         }
 
-        Employee employee = employeeOpt.get();
+        // Update basic info
         employee.setName(employeeDTO.getName());
         employee.setDepartment(employeeDTO.getDepartment());
-        employee = employeeService.updateEmployee(id,employee);
 
-        // Update tasks if taskIds are provided
-        if (employeeDTO.getTaskIds() != null) {
-            // Remove old tasker relations
-            Set<Tasker> existingTaskers = employee.getTaskers();
+        // Remove old taskers
+        Set<Tasker> existingTaskers = employee.getTaskers();
+        if (existingTaskers != null && !existingTaskers.isEmpty()) {
             taskerRepository.deleteAll(existingTaskers);
+            existingTaskers.clear(); // İlişkiyi koparmak için
+        }
 
-            // Add new tasker relations based on taskIds
+        // Add new taskers if taskIds are provided
+        if (employeeDTO.getTaskIds() != null) {
             for (Long taskId : employeeDTO.getTaskIds()) {
-                Optional<Task> taskOpt = Optional.ofNullable(taskService.getTaskById(taskId));
-                Employee finalEmployee = employee;
-                taskOpt.ifPresent(task -> {
+                Task task = taskService.getTaskById(taskId);
+                if (task != null) {
                     Tasker tasker = new Tasker();
-                    tasker.setEmployee(finalEmployee);
+                    tasker.setEmployee(employee);
                     tasker.setTask(task);
                     taskerRepository.save(tasker);
-                });
+                }
             }
         }
 
-        ApiResponse response = new ApiResponse("Employee updated successfully with employee id:" + employee.getId(), HttpStatus.OK.value());
+        employeeService.updateEmployee(id,employee);
+        ApiResponse response = new ApiResponse("Employee updated successfully with employee id: " + employee.getId(), HttpStatus.OK.value());
         return ResponseEntity.ok(response);
     }
 
