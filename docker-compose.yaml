@@ -1,0 +1,36 @@
+version: "3"
+services:
+  db:
+    container_name: 'db'
+    image: 'mysql'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'ewnlnqwmkssh52'
+      MYSQL_DATABASE: 'task_management'
+    volumes:
+      - task-mng:/var/lib/mysql
+    networks:
+      - mynet
+  app:
+    container_name: 'devops-v2-container'
+    image: 'ozangul1/devops-v2:latest'
+    build: .
+    restart: 'on-failure'
+    ports:
+      - '8080:8080'
+    environment:
+      DB_HOST: 'db'
+      DB_USER: 'root'
+      DB_PASSWORD: 'ewnlnqwmkssh52'
+      DB_PORT: '3306'
+      DB_NAME: 'task_management'
+    networks:
+      - mynet
+    depends_on:
+      - 'db'
+networks:
+  mynet:
+    external: true
+volumes:
+  task-mng:

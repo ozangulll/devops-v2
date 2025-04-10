@@ -76,9 +76,10 @@ public class TaskController {
 
     //working
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return ResponseEntity.noContent().build();
+        ApiResponse response = new ApiResponse("Task deleted successfully with id: " + id, HttpStatus.OK.value());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update/{id}")
