@@ -25,7 +25,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven
+      - name: Build with Maven (CREATE A JAR FILE ON GITHUB)
         run: mvn clean package -DskipTests
 
       # Eğer gerçekten GitHub Packages'e deploy ediyorsan bu adımı aktif et
