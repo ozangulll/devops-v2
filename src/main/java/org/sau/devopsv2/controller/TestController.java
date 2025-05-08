@@ -8,5 +8,7 @@ public class TestController {
 
     @GetMapping("/test")
     public String testEndpoint() {
-        return "Test endpointi çalıştı! aaa";
+        return "Test endpointi çalıştı!";
+    }
+}
    
