@@ -13,7 +13,7 @@ INSERT INTO tasks (name, description) VALUES
 -- Assuming the IDs of the employees and tasks are sequential starting from 1
 -- (you should adjust based on your actual database state)
 INSERT INTO taskers (employee_id, task_id) VALUES
-(6, 8), -- John Doe is assigned to Code Development
-(7, 9), -- Jane Smith is assigned to Market Research
-(8, 10); -- Alice Johnson is assigned to Client Meeting
+(1, 1), -- John Doe is assigned to Code Development
+(2, 2), -- Jane Smith is assigned to Market Research
+(3, 3); -- Alice Johnson is assigned to Client Meeting
 
